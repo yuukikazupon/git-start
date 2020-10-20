@@ -1,6 +1,10 @@
+{% load static %}
 <html>
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
 <body>
-  <div class="memo-form">
+  <div class="container">
     <h3>メモ内容</h3>
     <form action="{% url 'post' %}" method="post">
       {% csrf_token %}
@@ -12,7 +16,26 @@
       </div>
     </form>
   </div>
-<div class="top_box">
+
+  <form action="{% url 'set_order_option' %}" method="post">
+    {% csrf_token %}
+    <div class="ord01">
+      {{ new_old_form.new_old }}
+    </div>
+  </form>
+
+
+<form action="{% url 'set_record_number' %}" method="post">
+  {% csrf_token %}
+  <div class="slct01">
+    {{ record_number_form.record_number}}
+  </div>
+</form>
+
+
+
+
+<div class="itiran">
   {% for memo in page %}
   <div>
   <p>{{ memo.content }}</p>
@@ -20,7 +43,10 @@
   </div>
   {% endfor %}
 </div>
-<div class="pagination">
+<div class="atagu">
+  {% if page.has_previous %}
+    <a href="{% url 'index' %}{{ page.previous_page_number }}">前へ</a>
+  {% endif %}
 
   {% for num in page.paginator.page_range %}
     {% if page.number == num %}
@@ -30,9 +56,7 @@
     {% endif %}
   {% endfor %}
 
-  {% if page.has_previous %}
-    <a href="{% url 'index' %}{{ page.previous_page_number }}">前へ</a>
-  {% endif %}
+
   {% if page.has_next %}
     <a href="{% url 'index' %}{{ page.next_page_number }}">次へ</a>
   {% endif %}
