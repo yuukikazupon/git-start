@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
-from .forms import KeijibanForm,ProfileForm,CreateForm
+from .forms import KeijibanForm,ProfileForm,CreateForm,CommentForm
 from django.contrib.auth import authenticate, login, logout
-from .models import Keijiban,Profile
+from .models import Keijiban,Profile,Comment
 from django.forms.models import model_to_dict
 from django.core.paginator import Paginator
 
@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 
 def listfunc(request,now_page=1):
     object_list=Keijiban.objects.all().order_by("created_at").reverse()
+    comment_list=Comment.objects.all().order_by("created_at").reverse()
 
     # author_list=Keijiban.objects.all().values("authorid_id").reverse()
     author_list=Keijiban.objects.all().order_by("created_at").reverse().values("authorid_id")
@@ -35,12 +36,12 @@ def listfunc(request,now_page=1):
     # user_list1=len(user_list)
     # print(user_list1)
 
-    return render(request,"list.html",{"object_list":page.get_page(now_page)})
+    return render(request,"list.html",{"object_list":page.get_page(now_page),"comment_list":comment_list})
 
 
 def createfunc(request):
     if request.method == "POST":
-        form = Keijiban.objects.create(toukou=request.POST["toukou"],image=request.FILES.get("image"),created_at=request.POST["created_at"],authorid_id=request.user.id)
+        form = Keijiban.objects.create(toukou=request.POST["toukou"],image=request.FILES.get("image"),authorid_id=request.user.id)
         return redirect("list")
 
     else:
@@ -106,6 +107,23 @@ def goodfunc(request,pk):
     keijiban.good+=1
     keijiban.save()
     return redirect("list")
+
+def commentcreatefunc(request,pk):
+    profile=Profile.objects.get(profileid_id=request.user.id)
+    if request.method == "POST":
+        comment=Comment.objects.create(commentfield=request.POST["commentfield"],commentid_id=pk,commentprofileid_id=profile.id)
+        comment.save()
+        return redirect("list")
+
+    else:
+        comment=CommentForm()
+        return render(request,'commentcreate.html',{"comment":comment})
+
+
+
+
+
+
 
 
 

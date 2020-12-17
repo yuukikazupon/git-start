@@ -37,3 +37,10 @@ class Keijiban(models.Model) :
     image = models.ImageField(upload_to="media/media/",null=True,blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     good = models.IntegerField(null=True,blank=True,default=0)
+
+
+class Comment(models.Model):
+    commentid=models.ForeignKey(Keijiban,on_delete=models.CASCADE)
+    commentprofileid=models.ForeignKey(Profile,on_delete=models.CASCADE)
+    commentfield=models.TextField('コメント')
+    created_at = models.DateTimeField(default=timezone.now)

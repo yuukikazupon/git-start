@@ -5,7 +5,7 @@
 {% for object in object_list %}
 
 
-  <a href = "{% url 'profiledetail' object.authorid %}">{{ object.username }}</a>
+  <p>投稿者:<a href = "{% url 'profiledetail' object.authorid %}">{{ object.username }}</a></p>
   <p>{{ object.created_at }}</p>
   <p>投稿：{{ object.toukou }}</p>
 
@@ -28,6 +28,17 @@
   {% else %}
     <p>いいね{{ object.good }}</p>
   {% endif %}
+
+
+  <div>
+    {% for comment in comment_list %}
+      {% if comment.commentid_id  == object.id %}
+          <p>コメント：{{ comment.commentfield }}　{{ comment.commentprofileid.username }}さん　{{ comment.created_at }}</p>
+      {% endif %}
+    {% endfor %}
+    <a href = "{% url 'commentcreate' object.id %}">コメントする</a>
+  </div>
+
 
 {% endfor %}
 
