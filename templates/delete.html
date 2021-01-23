@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>プロフィール</h3>
+<form action="/delete/profile/{{ user.id }}" method="POST">
+<input type="hidden" name="id" value={{ user.id }}>
+<p>ID　：{{user.id}}</p>
+<p>名前：{{user.name}}</p>
+<p>年齢：{{user.age}}</p>
+<p>性別：{{user.sex}}</p>
+<p><button type="submit">削除</button></p>
+</form>
+
+<p><button onclick="history.back()">戻る</button></p>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Sample Page</title>
+</head>
+<body>
+    <h1> Hello, Flask!</h1>
+    {% for num in num_list %}
+        {% if num%15 == 0 %}
+        <h2>FIZZBUZZ</h2>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
